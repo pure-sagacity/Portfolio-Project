@@ -43,6 +43,12 @@ const Footer: React.FC<Props> = ({ isOutOfCollege }) => {
             <Github className="w-5 h-5" />
             GitHub
           </a>
+          <a
+            href="/privacy"
+            className="flex items-center gap-2 px-6 py-3 transition-colors rounded-lg bg-white/20 backdrop-blur-sm hover:bg-white/30"
+          >
+            Privacy Policy
+          </a>
         </div>
       </div>
     </section>

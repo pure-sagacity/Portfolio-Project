@@ -1,5 +1,5 @@
 import { useState, type JSX, useEffect } from "react";
-import { Star, X, Sun, Moon } from "lucide-react";
+import { ArrowLeft, Star, X, Sun, Moon } from "lucide-react";
 import { addReview, fetchReviews, type Review } from "./reviewsApi";
 import { useTheme } from "./contexts/ThemeContext";
 import HeroSection from "./components/HeroSection";
@@ -12,17 +12,26 @@ import EntrepreuneurshipSection from "./components/EntrepreneurshipSection";
 import ReviewSection from "./components/ReviewSection";
 import Footer from "./components/Footer";
 import { isFirebaseConfigured } from "./firebase";
+import PrivacyPolicyModal from "./components/PrivacyPolicyModal";
+import PrivacyPolicySection from "./components/PrivacyPolicySection";
+import type { PrivacyPolicy } from "./constants/privacyPolicy";
+
+const normalizePath = (path: string) => (path === "" ? "/" : path.replace(/\/+$/, "") || "/");
 
 const App = () => {
   const { theme, toggleTheme } = useTheme();
   const [showModal, setShowModal] = useState(false);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [pathname, setPathname] = useState(() => normalizePath(window.location.pathname));
+  const [selectedPrivacyPolicy, setSelectedPrivacyPolicy] = useState<PrivacyPolicy | null>(null);
   const [newReview, setNewReview] = useState<Review>({
     name: "",
     rating: -1,
     position: "",
     text: "",
   });
+
+  const isPrivacyPage = pathname === "/privacy";
 
   const formatFirebaseError = (error: unknown): string => {
     if (error && typeof error === "object") {
@@ -43,6 +52,22 @@ const App = () => {
         console.error("Error fetching reviews:", error);
       });
   }, []);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setPathname(normalizePath(window.location.pathname));
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.title = isPrivacyPage ? "Privacy Policy | Maaz's Portfolio" : "Maaz's Portfolio";
+  }, [isPrivacyPage]);
 
   const handleAddReview = () => {
     if (!isFirebaseConfigured) {
@@ -94,6 +119,23 @@ const App = () => {
       ));
   };
 
+  const navigateTo = (nextPath: string) => {
+    const normalizedPath = normalizePath(nextPath);
+    if (normalizedPath !== pathname) {
+      window.history.pushState({}, "", normalizedPath);
+      setPathname(normalizedPath);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const openPrivacyPolicy = (policy: PrivacyPolicy) => {
+    setSelectedPrivacyPolicy(policy);
+  };
+
+  const closePrivacyPolicy = () => {
+    setSelectedPrivacyPolicy(null);
+  };
+
   return (
     <div
       className={`min-h-screen transition-all duration-300 ${theme === "dark"
@@ -117,37 +159,73 @@ const App = () => {
         )}
       </button>
 
-      {/* Hero Section */}
-      <HeroSection />
+      {isPrivacyPage ? (
+        <div className="max-w-5xl px-6 py-12 mx-auto">
+          <div className="mb-8 flex items-center justify-between gap-4">
+            <div>
+              <p
+                className={`text-sm font-medium uppercase tracking-[0.2em] ${theme === "dark" ? "text-slate-400" : "text-slate-600"
+                  }`}
+              >
+                Policy
+              </p>
+              <h1
+                className={`mt-2 text-4xl font-bold ${theme === "dark" ? "text-white" : "text-slate-800"
+                  }`}
+              >
+                Privacy Policy
+              </h1>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigateTo("/")}
+              className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${theme === "dark"
+                ? "border-slate-600 bg-slate-800 text-slate-200 hover:border-indigo-400 hover:text-white"
+                : "border-slate-200 bg-white text-slate-700 hover:border-indigo-300 hover:text-slate-900"
+                }`}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to portfolio
+            </button>
+          </div>
 
-      <div className="max-w-6xl px-6 py-12 mx-auto">
-        <UniqueSection />
+          <PrivacyPolicySection onShowPolicy={openPrivacyPolicy} />
+        </div>
+      ) : (
+        <>
+          {/* Hero Section */}
+          <HeroSection />
 
-        {/* Academic & STEM Highlights */}
-        <AcademicSTEMHighlights />
+          <div className="max-w-6xl px-6 py-12 mx-auto">
+            <UniqueSection />
 
-        {/* Tech, Innovation, and Projects */}
-        <TechSection />
+            {/* Academic & STEM Highlights */}
+            <AcademicSTEMHighlights />
 
-        {/* Leadership, Service, & School */}
-        <LeadershipSection />
+            {/* Tech, Innovation, and Projects */}
+            <TechSection />
 
-        {/* Athletics & Competitions */}
-        <AthleticSection />
+            {/* Leadership, Service, & School */}
+            <LeadershipSection />
 
-        {/* Entrepreneurship and Drive */}
-        <EntrepreuneurshipSection />
+            {/* Athletics & Competitions */}
+            <AthleticSection />
 
-        {/* Reviews Section */}
-        <ReviewSection
-          setShowModal={setShowModal}
-          reviews={reviews}
-          renderStars={renderStars}
-        />
+            {/* Entrepreneurship and Drive */}
+            <EntrepreuneurshipSection />
 
-        {/* Footer */}
-        <Footer />
-      </div>
+            {/* Reviews Section */}
+            <ReviewSection
+              setShowModal={setShowModal}
+              reviews={reviews}
+              renderStars={renderStars}
+            />
+
+            {/* Footer */}
+            <Footer />
+          </div>
+        </>
+      )}
 
       {/* Modal */}
       {showModal && (
@@ -286,6 +364,8 @@ const App = () => {
           </div>
         </div>
       )}
+
+      <PrivacyPolicyModal policy={selectedPrivacyPolicy} onClose={closePrivacyPolicy} />
     </div>
   );
 };

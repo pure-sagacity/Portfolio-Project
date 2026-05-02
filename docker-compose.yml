@@ -11,7 +11,7 @@ services:
         VITE_FIREBASE_APP_ID: ${VITE_FIREBASE_APP_ID}
         VITE_FIREBASE_MEASUREMENT_ID: ${VITE_FIREBASE_MEASUREMENT_ID}
     ports:
-      - "80"
+      - 80
     deploy:
       replicas: 3
       restart_policy:

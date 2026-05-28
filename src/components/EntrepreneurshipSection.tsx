@@ -1,108 +1,150 @@
-import { Zap } from 'lucide-react';
+import { Zap } from "lucide-react";
+import { useTheme } from "../contexts/ThemeContext";
 
 interface AthleticSectionProps {
-    isOutOfCollege?: boolean;
+  isOutOfCollege?: boolean;
 }
 
-const EntrepreuneurshipSection: React.FC<AthleticSectionProps> = ({ isOutOfCollege = false }) => {
-    return (
-        <>
-            {isOutOfCollege && (
-          <section className="mb-16">
-            <div className="flex items-center gap-3 mb-8">
-              <Zap className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-              <h2 className="text-3xl font-bold transition-colors duration-300 text-slate-800 dark:text-white">
-                Entrepreneurial Ventures
+const EntrepreneurshipSection: React.FC<AthleticSectionProps> = ({
+  isOutOfCollege = false,
+}) => {
+  const { theme } = useTheme();
+
+  const startups = [
+    {
+      name: "EcoTech Solutions",
+      role: "Co-Founder & CTO • 2023-Present",
+      highlight: "$2M raised",
+      note: "Renewable energy storage work.",
+    },
+    {
+      name: "StudySync",
+      role: "Founder • 2022-2023",
+      highlight: "10K+ users",
+      note: "EdTech platform acquired by a publisher.",
+    },
+    {
+      name: "DevTools Pro",
+      role: "Co-Founder • 2021-2022",
+      highlight: "$500K ARR",
+      note: "Developer productivity suite before exit.",
+    },
+  ];
+
+  const advisory = [
+    {
+      title: "Angel Investor",
+      meta: "15+ investments",
+      note: "AI and sustainability startups.",
+    },
+    {
+      title: "Startup Mentor",
+      meta: "50+ startups",
+      note: "Y Combinator, Techstars, 500 Startups.",
+    },
+    {
+      title: "Innovation Consultant",
+      meta: "20+ enterprises",
+      note: "Digital transformation and workshops.",
+    },
+  ];
+
+  return (
+    <>
+      {isOutOfCollege && (
+        <section id="entrepreneurship" className="scroll-mt-24">
+          <div className="mb-8 flex items-center gap-3">
+            <Zap
+              className={`h-7 w-7 transition-colors duration-300 ${theme === "dark" ? "text-indigo-300" : "text-indigo-600"}`}
+            />
+            <div>
+              <p
+                className={`text-xs font-semibold uppercase tracking-[0.3em] ${theme === "dark" ? "text-slate-500" : "text-slate-500"}`}
+              >
+                Entrepreneurship
+              </p>
+              <h2
+                className={`mt-2 text-3xl font-bold transition-colors duration-300 ${theme === "dark" ? "text-white" : "text-slate-900"}`}
+              >
+                Ventures & advisory
               </h2>
             </div>
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="p-6 transition-colors duration-300 bg-white shadow-lg dark:bg-slate-800 rounded-2xl">
-                <h3 className="mb-4 text-xl font-semibold transition-colors duration-300 text-slate-800 dark:text-white">
-                  Founded Startups
-                </h3>
-                <div className="space-y-4">
-                  <div className="pl-4 border-l-4 border-emerald-500 dark:border-emerald-400">
-                    <h4 className="font-semibold transition-colors duration-300 text-slate-700 dark:text-slate-200">
-                      EcoTech Solutions
-                    </h4>
-                    <p className="mb-2 text-sm transition-colors duration-300 text-slate-600 dark:text-slate-400">
-                      Co-Founder & CTO • 2023-Present
+          </div>
+          <div className="grid gap-12 lg:grid-cols-[1fr_0.9fr]">
+            <div>
+              <h3
+                className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-slate-900"}`}
+              >
+                Founded startups
+              </h3>
+              <div className="mt-8 space-y-10 border-l border-slate-200 pl-6 dark:border-slate-800">
+                {startups.map((startup) => (
+                  <div key={startup.name} className="relative">
+                    <span
+                      className={`absolute -left-[1.625rem] top-2 h-3 w-3 rounded-full ${theme === "dark" ? "bg-indigo-400" : "bg-indigo-600"}`}
+                    />
+                    <div className="flex flex-wrap items-baseline justify-between gap-3">
+                      <h4
+                        className={`text-2xl font-semibold ${theme === "dark" ? "text-white" : "text-slate-950"}`}
+                      >
+                        {startup.name}
+                      </h4>
+                      <span
+                        className={`text-xs uppercase tracking-[0.28em] ${theme === "dark" ? "text-slate-500" : "text-slate-500"}`}
+                      >
+                        {startup.highlight}
+                      </span>
+                    </div>
+                    <p
+                      className={`mt-2 text-sm font-medium ${theme === "dark" ? "text-indigo-300" : "text-indigo-600"}`}
+                    >
+                      {startup.role}
                     </p>
-                    <p className="transition-colors duration-300 text-slate-600 dark:text-slate-300">
-                      $2M in funding raised, 50+ employees, revolutionizing
-                      renewable energy storage
-                    </p>
-                  </div>
-                  <div className="pl-4 border-l-4 border-blue-500 dark:border-blue-400">
-                    <h4 className="font-semibold transition-colors duration-300 text-slate-700 dark:text-slate-200">StudySync</h4>
-                    <p className="mb-2 text-sm transition-colors duration-300 text-slate-600 dark:text-slate-400">
-                      Founder • 2022-2023
-                    </p>
-                    <p className="transition-colors duration-300 text-slate-600 dark:text-slate-300">
-                      EdTech platform with 10K+ users, acquired by major
-                      educational publisher
-                    </p>
-                  </div>
-                  <div className="pl-4 border-l-4 border-purple-500 dark:border-purple-400">
-                    <h4 className="font-semibold transition-colors duration-300 text-slate-700 dark:text-slate-200">
-                      DevTools Pro
-                    </h4>
-                    <p className="mb-2 text-sm transition-colors duration-300 text-slate-600 dark:text-slate-400">
-                      Co-Founder • 2021-2022
-                    </p>
-                    <p className="transition-colors duration-300 text-slate-600 dark:text-slate-300">
-                      Developer productivity suite, $500K ARR before successful
-                      exit
+                    <p
+                      className={`mt-3 max-w-2xl text-base leading-7 ${theme === "dark" ? "text-slate-400" : "text-slate-600"}`}
+                    >
+                      {startup.note}
                     </p>
                   </div>
-                </div>
-              </div>
-              <div className="p-6 transition-colors duration-300 bg-white shadow-lg dark:bg-slate-800 rounded-2xl">
-                <h3 className="mb-4 text-xl font-semibold transition-colors duration-300 text-slate-800 dark:text-white">
-                  Investment & Advisory
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold transition-colors duration-300 text-slate-700 dark:text-slate-200">
-                      Angel Investor
-                    </h4>
-                    <p className="transition-colors duration-300 text-slate-600 dark:text-slate-300">
-                      15+ early-stage investments in AI and sustainability
-                      startups
-                    </p>
-                    <p className="text-sm transition-colors duration-300 text-slate-600 dark:text-slate-400">
-                      3 successful exits, 2 unicorns in portfolio
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold transition-colors duration-300 text-slate-700 dark:text-slate-200">
-                      Startup Accelerator Mentor
-                    </h4>
-                    <p className="transition-colors duration-300 text-slate-600 dark:text-slate-300">
-                      Y Combinator, Techstars, 500 Startups
-                    </p>
-                    <p className="text-sm transition-colors duration-300 text-slate-600 dark:text-slate-400">
-                      Mentored 50+ startups, $100M+ in follow-on funding
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold transition-colors duration-300 text-slate-700 dark:text-slate-200">
-                      Innovation Consultant
-                    </h4>
-                    <p className="transition-colors duration-300 text-slate-600 dark:text-slate-300">
-                      Fortune 500 digital transformation advisor
-                    </p>
-                    <p className="text-sm transition-colors duration-300 text-slate-600 dark:text-slate-400">
-                      Led innovation workshops for 20+ enterprises
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-          </section>
-        )}
-        </>
-    );
+            <div>
+              <h3
+                className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-slate-900"}`}
+              >
+                Advisory & investment
+              </h3>
+              <div className="mt-8 space-y-8 border-l border-slate-200 pl-6 dark:border-slate-800">
+                {advisory.map((item) => (
+                  <div key={item.title} className="relative">
+                    <span
+                      className={`absolute -left-[1.625rem] top-2 h-3 w-3 rounded-full ${theme === "dark" ? "bg-cyan-400" : "bg-cyan-600"}`}
+                    />
+                    <p
+                      className={`text-sm font-semibold ${theme === "dark" ? "text-indigo-300" : "text-indigo-600"}`}
+                    >
+                      {item.meta}
+                    </p>
+                    <h4
+                      className={`mt-1 text-2xl font-semibold ${theme === "dark" ? "text-white" : "text-slate-950"}`}
+                    >
+                      {item.title}
+                    </h4>
+                    <p
+                      className={`mt-3 max-w-2xl text-base leading-7 ${theme === "dark" ? "text-slate-400" : "text-slate-600"}`}
+                    >
+                      {item.note}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+    </>
+  );
 };
 
-export default EntrepreuneurshipSection;
+export default EntrepreneurshipSection;

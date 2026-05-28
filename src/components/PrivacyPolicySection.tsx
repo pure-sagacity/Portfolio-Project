@@ -1,72 +1,51 @@
-import { Eye, ShieldCheck } from "lucide-react";
-import { privacyPolicies, type PrivacyPolicy } from "../constants/privacyPolicy";
+import { Eye } from "lucide-react";
+import {
+  privacyPolicies,
+  type PrivacyPolicy,
+} from "../constants/privacyPolicy";
 import { useTheme } from "../contexts/ThemeContext";
 
 interface Props {
-    onShowPolicy: (policy: PrivacyPolicy) => void;
+  onShowPolicy: (policy: PrivacyPolicy) => void;
 }
 
 const PrivacyPolicySection: React.FC<Props> = ({ onShowPolicy }) => {
-    const { theme } = useTheme();
+  const { theme } = useTheme();
 
-    return (
-        <section className="mb-16">
-            <div className="flex items-center gap-3 mb-8">
-                <ShieldCheck
-                    className={`h-8 w-8 transition-colors duration-300 ${theme === "dark" ? "text-indigo-400" : "text-indigo-600"
-                        }`}
-                />
-                <div>
-                    <h2
-                        className={`text-3xl font-bold transition-colors duration-300 ${theme === "dark" ? "text-white" : "text-slate-800"
-                            }`}
-                    >
-                        Privacy Policy
-                    </h2>
-                    <p
-                        className={`mt-1 text-sm transition-colors duration-300 ${theme === "dark" ? "text-slate-400" : "text-slate-600"
-                            }`}
-                    >
-                        Select an app to view the policy text shown for that project.
-                    </p>
-                </div>
+  return (
+    <section className="scroll-mt-24">
+      <div className="space-y-8 border-t border-slate-200 pt-8 dark:border-slate-800">
+        {privacyPolicies.map((policy) => (
+          <div
+            key={policy.appName}
+            className="grid gap-4 md:grid-cols-[1fr_auto] md:items-center"
+          >
+            <div>
+              <h3
+                className={`text-2xl font-semibold transition-colors duration-300 ${theme === "dark" ? "text-white" : "text-slate-950"}`}
+              >
+                {policy.appName}
+              </h3>
+              <p
+                className={`mt-2 max-w-2xl text-base leading-7 transition-colors duration-300 ${theme === "dark" ? "text-slate-400" : "text-slate-600"}`}
+              >
+                View the policy text for this project.
+              </p>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-                {privacyPolicies.map((policy) => (
-                    <div
-                        key={policy.appName}
-                        className={`flex items-center justify-between gap-4 rounded-2xl p-6 shadow-lg transition-all duration-300 ${theme === "dark" ? "bg-slate-800" : "bg-white"
-                            }`}
-                    >
-                        <div>
-                            <h3
-                                className={`text-lg font-semibold transition-colors duration-300 ${theme === "dark" ? "text-white" : "text-slate-800"
-                                    }`}
-                            >
-                                {policy.appName}
-                            </h3>
-                            <p
-                                className={`mt-1 text-sm transition-colors duration-300 ${theme === "dark" ? "text-slate-400" : "text-slate-600"
-                                    }`}
-                            >
-                                Privacy policy text is available in a modal.
-                            </p>
-                        </div>
-
-                        <button
-                            type="button"
-                            onClick={() => onShowPolicy(policy)}
-                            className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
-                        >
-                            <Eye className="h-4 w-4" />
-                            Show
-                        </button>
-                    </div>
-                ))}
-            </div>
-        </section>
-    );
+            <button
+              type="button"
+              onClick={() => onShowPolicy(policy)}
+              className="inline-flex items-center gap-2 border-b border-indigo-500 px-0 py-1 text-sm font-semibold text-indigo-600 transition-colors hover:text-indigo-700 dark:text-indigo-300 dark:hover:text-white"
+            >
+              <Eye className="w-4 h-4" />
+              View
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 };
 
 export default PrivacyPolicySection;

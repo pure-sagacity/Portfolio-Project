@@ -1,6 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 type Theme = "light" | "dark";
+type ThemeMode = "light" | "dark" | "system";
 
 interface ThemeContextType {
   theme: Theme;
@@ -21,48 +28,96 @@ interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
+const themeStorageKey = "theme-mode";
+
+const getSystemTheme = (): Theme => {
+  if (typeof window === "undefined") {
+    return "light";
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+};
+
+const isThemeMode = (value: string | null): value is ThemeMode => {
+  return value === "light" || value === "dark" || value === "system";
+};
+
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // Check if there's a saved theme in localStorage
-    const savedTheme = localStorage.getItem("theme") as Theme;
-    if (savedTheme) {
-      return savedTheme;
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
+    if (typeof window === "undefined") {
+      return "system";
     }
-    // Otherwise, check system preference
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+
+    const savedThemeMode = localStorage.getItem(themeStorageKey);
+    return isThemeMode(savedThemeMode) ? savedThemeMode : "system";
   });
 
-  useEffect(() => {
-    // Save theme to localStorage
-    localStorage.setItem("theme", theme);
+  const [systemTheme, setSystemTheme] = useState<Theme>(getSystemTheme());
 
-    // Apply theme CSS custom properties to document
-    const root = document.documentElement;
-    if (theme === "dark") {
-      root.style.setProperty("--bg-primary", "#0f172a"); // slate-900
-      root.style.setProperty("--bg-secondary", "#1e293b"); // slate-800
-      root.style.setProperty("--bg-tertiary", "#334155"); // slate-700
-      root.style.setProperty("--text-primary", "#ffffff");
-      root.style.setProperty("--text-secondary", "#cbd5e1"); // slate-300
-      root.style.setProperty("--text-tertiary", "#94a3b8"); // slate-400
-      root.style.setProperty("--border-color", "#475569"); // slate-600
-      root.style.setProperty("--accent-color", "#6366f1"); // indigo-500
-    } else {
-      root.style.setProperty("--bg-primary", "#f8fafc"); // slate-50
-      root.style.setProperty("--bg-secondary", "#ffffff");
-      root.style.setProperty("--bg-tertiary", "#f1f5f9"); // slate-100
-      root.style.setProperty("--text-primary", "#0f172a"); // slate-900
-      root.style.setProperty("--text-secondary", "#334155"); // slate-700
-      root.style.setProperty("--text-tertiary", "#64748b"); // slate-500
-      root.style.setProperty("--border-color", "#e2e8f0"); // slate-200
-      root.style.setProperty("--accent-color", "#4f46e5"); // indigo-600
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
     }
-  }, [theme]);
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const updateSystemTheme = () => {
+      setSystemTheme(mediaQuery.matches ? "dark" : "light");
+    };
+
+    updateSystemTheme();
+    mediaQuery.addEventListener("change", updateSystemTheme);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateSystemTheme);
+    };
+  }, []);
+
+  const theme = useMemo<Theme>(() => {
+    return themeMode === "system" ? systemTheme : themeMode;
+  }, [systemTheme, themeMode]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(themeStorageKey, themeMode);
+    }
+
+    const root = document.documentElement;
+    root.style.colorScheme = theme;
+    if (theme === "dark") {
+      root.style.setProperty("--bg-primary", "#0f172a");
+      root.style.setProperty("--bg-secondary", "#1e293b");
+      root.style.setProperty("--bg-tertiary", "#334155");
+      root.style.setProperty("--text-primary", "#ffffff");
+      root.style.setProperty("--text-secondary", "#cbd5e1");
+      root.style.setProperty("--text-tertiary", "#94a3b8");
+      root.style.setProperty("--border-color", "#475569");
+      root.style.setProperty("--accent-color", "#6366f1");
+    } else {
+      root.style.setProperty("--bg-primary", "#f8fafc");
+      root.style.setProperty("--bg-secondary", "#ffffff");
+      root.style.setProperty("--bg-tertiary", "#f1f5f9");
+      root.style.setProperty("--text-primary", "#0f172a");
+      root.style.setProperty("--text-secondary", "#334155");
+      root.style.setProperty("--text-tertiary", "#64748b");
+      root.style.setProperty("--border-color", "#e2e8f0");
+      root.style.setProperty("--accent-color", "#4f46e5");
+    }
+  }, [theme, themeMode]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+    setThemeMode((previousMode) => {
+      if (previousMode === "system") {
+        return "light";
+      }
+
+      if (previousMode === "light") {
+        return "dark";
+      }
+
+      return "system";
+    });
   };
 
   return (

@@ -10,149 +10,120 @@ const LeadershipSection: React.FC<LeadershipSectionProps> = ({
 }) => {
   const { theme } = useTheme();
 
+  const leadershipItems = [
+    {
+      title: "NJHS Inductee",
+      meta: "National Junior Honor Society • 2024",
+      note: "Academic excellence, leadership, and service.",
+    },
+    {
+      title: '"Fabulous Falcon" Award',
+      meta: "Forestwood Middle School • 2024",
+      note: "Recognition for school-community contribution.",
+    },
+    {
+      title: "Peer Learning Mentor",
+      meta: "Forestwood Middle School • 2023-2024",
+      note: "Mentored 50+ students in computer science fundamentals.",
+    },
+  ];
+
+  const serviceItems = isOutOfCollege
+    ? [
+        {
+          title: "Code for Good Volunteer",
+          meta: "2020-Present • 500+ hours",
+          note: "Built digital solutions for 10+ nonprofits.",
+        },
+      ]
+    : [];
+
   return (
-    <section className="mb-16">
-      <div className="flex items-center gap-3 mb-8">
+    <section id="leadership" className="scroll-mt-24">
+      <div className="mb-8 flex items-center gap-3">
         <Users
-          className={`w-8 h-8 transition-colors duration-300 ${
-            theme === "dark" ? "text-indigo-400" : "text-indigo-600"
+          className={`h-7 w-7 transition-colors duration-300 ${
+            theme === "dark" ? "text-indigo-300" : "text-indigo-600"
           }`}
         />
-        <h2
-          className={`text-3xl font-bold transition-colors duration-300 ${
-            theme === "dark" ? "text-white" : "text-slate-800"
-          }`}
-        >
-          Leadership & Service
-        </h2>
+        <div>
+          <p
+            className={`text-xs font-semibold uppercase tracking-[0.3em] ${theme === "dark" ? "text-slate-500" : "text-slate-500"}`}
+          >
+            Leadership
+          </p>
+          <h2
+            className={`mt-2 text-3xl font-bold transition-colors duration-300 ${theme === "dark" ? "text-white" : "text-slate-900"}`}
+          >
+            Leadership & service
+          </h2>
+        </div>
       </div>
-      <div
-        className={`rounded-2xl shadow-lg p-8 transition-all duration-300 ${
-          theme === "dark" ? "bg-slate-800" : "bg-white"
-        }`}
-      >
-        <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-12 lg:grid-cols-[1fr_0.72fr]">
+        <div>
+          <h3
+            className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-slate-900"}`}
+          >
+            Roles
+          </h3>
+          <div className="mt-8 space-y-10 border-l border-slate-200 pl-6 dark:border-slate-800">
+            {leadershipItems.map((item, index) => (
+              <div key={item.title} className="relative">
+                <span
+                  className={`absolute -left-[1.625rem] top-2 h-3 w-3 rounded-full ${index === 0 ? "bg-indigo-400" : index === 1 ? "bg-cyan-400" : "bg-emerald-400"}`}
+                />
+                <p
+                  className={`text-sm font-semibold ${theme === "dark" ? "text-indigo-300" : "text-indigo-600"}`}
+                >
+                  {item.meta}
+                </p>
+                <h4
+                  className={`mt-1 text-2xl font-semibold ${theme === "dark" ? "text-white" : "text-slate-950"}`}
+                >
+                  {item.title}
+                </h4>
+                <p
+                  className={`mt-3 max-w-xl text-base leading-7 ${theme === "dark" ? "text-slate-400" : "text-slate-600"}`}
+                >
+                  {item.note}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+        {serviceItems.length > 0 && (
           <div>
             <h3
-              className={`text-xl font-semibold mb-6 transition-colors duration-300 ${
-                theme === "dark" ? "text-white" : "text-slate-800"
-              }`}
+              className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-slate-900"}`}
             >
-              Leadership Roles
+              Service
             </h3>
-            <div className="space-y-4">
-              <div>
-                <h4
-                  className={`font-semibold transition-colors duration-300 ${
-                    theme === "dark" ? "text-slate-200" : "text-slate-800"
-                  }`}
-                >
-                  NJHS Inductee
-                </h4>
-                <p
-                  className={`transition-colors duration-300 ${
-                    theme === "dark" ? "text-slate-300" : "text-slate-600"
-                  }`}
-                >
-                  National Junior Honor Society Inductee • 2024
-                </p>
-                <p
-                  className={`text-sm transition-colors duration-300 ${
-                    theme === "dark" ? "text-slate-400" : "text-slate-600"
-                  }`}
-                >
-                  Recognized for academic excellence, leadership, and community
-                  service in middle school
-                </p>
-              </div>
-              <div>
-                <h4
-                  className={`font-semibold transition-colors duration-300 ${
-                    theme === "dark" ? "text-slate-200" : "text-slate-800"
-                  }`}
-                >
-                  "Fabulous Falcon" Award
-                </h4>
-                <p
-                  className={`transition-colors duration-300 ${
-                    theme === "dark" ? "text-slate-300" : "text-slate-600"
-                  }`}
-                >
-                  Forestwood Middle School • 2024
-                </p>
-                <p
-                  className={`text-sm transition-colors duration-300 ${
-                    theme === "dark" ? "text-slate-400" : "text-slate-600"
-                  }`}
-                >
-                  Awarded for outstanding contributions to school community and
-                  leadership in student activities
-                </p>
-              </div>
-              <div>
-                <h4
-                  className={`font-semibold transition-colors duration-300 ${
-                    theme === "dark" ? "text-slate-200" : "text-slate-800"
-                  }`}
-                >
-                  Peer Learning Mentor
-                </h4>
-                <p
-                  className={`transition-colors duration-300 ${
-                    theme === "dark" ? "text-slate-300" : "text-slate-600"
-                  }`}
-                >
-                  Forestwood Middle School • 2023-2024
-                </p>
-                <p
-                  className={`text-sm transition-colors duration-300 ${
-                    theme === "dark" ? "text-slate-400" : "text-slate-600"
-                  }`}
-                >
-                  Mentored 50+ students in computer science fundamentals,
-                  fostering a collaborative learning environment
-                </p>
-              </div>
-            </div>
-          </div>
-          {isOutOfCollege && (
-            <div>
-              <h3
-                className={`mb-6 text-xl font-semibold transition-colors duration-300 ${
-                  theme === "dark" ? "text-white" : "text-slate-800"
-                }`}
-              >
-                Community Service
-              </h3>
-              <div className="space-y-4">
-                <div>
+            <div className="mt-8 space-y-8 border-l border-slate-200 pl-6 dark:border-slate-800">
+              {serviceItems.map((item) => (
+                <div key={item.title} className="relative">
+                  <span
+                    className={`absolute -left-[1.625rem] top-2 h-3 w-3 rounded-full ${theme === "dark" ? "bg-cyan-400" : "bg-cyan-600"}`}
+                  />
                   <h4
-                    className={`font-semibold transition-colors duration-300 ${
-                      theme === "dark" ? "text-slate-200" : "text-slate-800"
-                    }`}
+                    className={`text-2xl font-semibold ${theme === "dark" ? "text-white" : "text-slate-950"}`}
                   >
-                    Code for Good Volunteer
+                    {item.title}
                   </h4>
                   <p
-                    className={`transition-colors duration-300 ${
-                      theme === "dark" ? "text-slate-300" : "text-slate-600"
-                    }`}
+                    className={`mt-1 text-sm font-medium ${theme === "dark" ? "text-indigo-300" : "text-indigo-600"}`}
                   >
-                    2020-Present • 500+ hours
+                    {item.meta}
                   </p>
                   <p
-                    className={`text-sm transition-colors duration-300 ${
-                      theme === "dark" ? "text-slate-400" : "text-slate-600"
-                    }`}
+                    className={`mt-3 max-w-xl text-base leading-7 ${theme === "dark" ? "text-slate-400" : "text-slate-600"}`}
                   >
-                    Built digital solutions for 10+ nonprofits, impacting
-                    10,000+ lives
+                    {item.note}
                   </p>
                 </div>
-              </div>
+              ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   );

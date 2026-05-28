@@ -1,53 +1,47 @@
-import { Mail, Linkedin, Github } from 'lucide-react';
-import { useTheme } from '../contexts/ThemeContext';
+import { Github, Mail, ArrowUpRight } from "lucide-react";
+import { useTheme } from "../contexts/ThemeContext";
 
-interface Props {
-  isOutOfCollege?: boolean;
-}
-
-const Footer: React.FC<Props> = ({ isOutOfCollege }) => {
+const Footer: React.FC = () => {
   const { theme } = useTheme();
 
   return (
-    <section className="mb-16">
-      <div className={`rounded-2xl shadow-xl text-white p-12 text-center transition-all duration-300 ${theme === 'dark'
-        ? 'bg-linear-to-r from-indigo-700 to-purple-700'
-        : 'bg-linear-to-r from-indigo-600 to-purple-600'
-        }`}>
-        <h2 className="mb-6 text-4xl font-bold">Let's Connect</h2>
-        <p className="mb-8 text-xl opacity-90">
-          Ready to collaborate on something amazing? I'm always excited to
-          discuss new opportunities and innovative projects.
-        </p>
-        <div className="flex flex-wrap justify-center gap-6">
+    <section className="py-8">
+      <div
+        className={`flex flex-col gap-6 border-t pt-8 md:flex-row md:items-center md:justify-between ${theme === "dark" ? "border-slate-800" : "border-slate-200"}`}
+      >
+        <div>
+          <p
+            className={`text-xs font-semibold uppercase tracking-[0.3em] ${theme === "dark" ? "text-slate-500" : "text-slate-500"}`}
+          >
+            Contact
+          </p>
+          <h2
+            className={`mt-2 text-3xl font-bold ${theme === "dark" ? "text-white" : "text-slate-950"}`}
+          >
+            Let’s connect
+          </h2>
+        </div>
+        <div className="flex flex-wrap gap-5 text-sm font-medium">
           <a
             href="mailto:khokharmaaz@gmail.com"
-            className="flex items-center gap-2 px-6 py-3 transition-colors rounded-lg bg-white/20 backdrop-blur-sm hover:bg-white/30"
+            className={`inline-flex items-center gap-2 transition-colors ${theme === "dark" ? "text-slate-300 hover:text-white" : "text-slate-600 hover:text-slate-950"}`}
           >
-            <Mail className="w-5 h-5" />
-            Email Me
+            <Mail className="w-4 h-4" />
+            Email
           </a>
-          {isOutOfCollege && (
-            <a
-              href="https://linkedin.com/MyLinkedinProfile"
-              className="flex items-center gap-2 px-6 py-3 transition-colors rounded-lg bg-white/20 backdrop-blur-sm hover:bg-white/30"
-            >
-              <Linkedin className="w-5 h-5" />
-              LinkedIn
-            </a>
-          )}
           <a
-            href="https://github.com/coolestcoder655"
-            className="flex items-center gap-2 px-6 py-3 transition-colors rounded-lg bg-white/20 backdrop-blur-sm hover:bg-white/30"
+            href="https://github.com/pure-sagacity"
+            className={`inline-flex items-center gap-2 transition-colors ${theme === "dark" ? "text-slate-300 hover:text-white" : "text-slate-600 hover:text-slate-950"}`}
           >
-            <Github className="w-5 h-5" />
+            <Github className="w-4 h-4" />
             GitHub
           </a>
           <a
             href="/privacy"
-            className="flex items-center gap-2 px-6 py-3 transition-colors rounded-lg bg-white/20 backdrop-blur-sm hover:bg-white/30"
+            className={`inline-flex items-center gap-2 transition-colors ${theme === "dark" ? "text-slate-300 hover:text-white" : "text-slate-600 hover:text-slate-950"}`}
           >
             Privacy Policy
+            <ArrowUpRight className="w-4 h-4" />
           </a>
         </div>
       </div>

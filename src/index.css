@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap");
 @import "tailwindcss";
 
 /* Theme CSS Variables */
@@ -10,7 +11,60 @@
   --text-tertiary: #64748b;
   --border-color: #e2e8f0;
   --accent-color: #4f46e5;
-  transition: all 0.3s ease;
+  --font-body: "Manrope", system-ui, sans-serif;
+  --font-display: "Sora", system-ui, sans-serif;
+  color-scheme: light;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent-color) 22%, transparent);
+  color: var(--text-primary);
+}
+
+.story-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease;
+  transition-delay: 120ms;
+}
+
+.story-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.story-rule {
+  background: linear-gradient(90deg, var(--border-color), transparent);
 }
 
 /* Custom theme classes */

@@ -1,24 +1,22 @@
-FROM oven/bun:1.1.34 AS development-dependencies-env
-WORKDIR /app
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+FROM node:20-bookworm-slim AS base
 
-FROM oven/bun:1.1.34 AS production-dependencies-env
+FROM base AS dependencies-env
 WORKDIR /app
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile --production
+COPY package.json ./
+RUN npm install
 
-FROM oven/bun:1.1.34 AS build-env
+FROM base AS build-env
 WORKDIR /app
 COPY . ./
-COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-RUN bun run build
+COPY --from=dependencies-env /app/node_modules /app/node_modules
+RUN npm run build
 
-FROM oven/bun:1.1.34
+FROM base
 WORKDIR /app
 ENV NODE_ENV=production
-COPY package.json bun.lock ./
-COPY --from=production-dependencies-env /app/node_modules /app/node_modules
+COPY package.json ./
+COPY --from=dependencies-env /app/node_modules /app/node_modules
+RUN npm prune --omit=dev
 COPY --from=build-env /app/build /app/build
 EXPOSE 3000
-CMD ["bun", "run", "start"]
+CMD ["npm", "run", "start"]

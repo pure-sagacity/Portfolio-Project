@@ -1,87 +1,80 @@
-# Welcome to React Router!
+# Maaz Khokhar Portfolio
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+A polished, single-page portfolio showcasing systems work, tools, and product builds. The site highlights featured projects, tech stack focus areas, skills, and dotfiles, with a dark, cinematic UI and motion-driven reveals.
 
 ## Features
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- Project spotlight with featured and grid layouts
+- Interactive tech stack and skills filters
+- Motion-rich section transitions and hover states
+- Social links, contact footer, and curated dotfiles
+- Server-side rendering with React Router
+
+## Tech Stack
+
+- React 19 + React Router 8
+- TypeScript
+- Tailwind CSS v4
+- Motion animations (framer-motion)
+- Bun runtime and tooling
 
 ## Getting Started
 
-### Installation
+### Prerequisites
 
-Install the dependencies:
+- Bun installed (https://bun.sh)
+
+### Install
 
 ```bash
-npm install
+bun install
 ```
 
 ### Development
 
-Start the development server with HMR:
-
 ```bash
-npm run dev
+bun run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+The dev server runs at `http://localhost:5173`.
+
+### Typecheck
+
+```bash
+bun run typecheck
+```
 
 ## Building for Production
 
-Create a production build:
-
 ```bash
-npm run build
+bun run build
 ```
 
 ## Deployment
 
-### Docker Deployment
-
-To build and run using Docker:
+### Manual Deployment
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+bun install --production
+bun run build
+bun run start
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+The server runs on port `3000` by default.
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+### Docker Deployment
 
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+```bash
+docker build -t portfolio .
+docker run -p 3000:3000 portfolio
 ```
 
-## Styling
+This image can be deployed to any Docker-compatible platform (ECS, Cloud Run, Fly.io, Railway, etc.).
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+## Notes
+
+- No database or environment variables are required for local development.
 
 ---
 
-Built with ❤️ using React Router.
+Built with React Router and Bun.

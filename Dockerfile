@@ -1,25 +1,24 @@
-FROM node:24-alpine AS development-dependencies-env
-COPY . /app
+FROM oven/bun:1.1.34 AS development-dependencies-env
 WORKDIR /app
-RUN npm i
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
-FROM node:24-alpine AS production-dependencies-env
-COPY ./package.json /app/
+FROM oven/bun:1.1.34 AS production-dependencies-env
 WORKDIR /app
-RUN npm i --omit=dev
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --production
 
-FROM node:24-alpine AS build-env
-COPY . /app/
+FROM oven/bun:1.1.34 AS build-env
+WORKDIR /app
+COPY . ./
 COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-WORKDIR /app
-RUN npm run build
+RUN bun run build
 
-FROM node:24-alpine
-COPY ./package.json /app/
+FROM oven/bun:1.1.34
+WORKDIR /app
+ENV NODE_ENV=production
+COPY package.json bun.lock ./
 COPY --from=production-dependencies-env /app/node_modules /app/node_modules
 COPY --from=build-env /app/build /app/build
-WORKDIR /app
-
 EXPOSE 3000
-
-CMD ["npm", "run", "start"]
+CMD ["bun", "run", "start"]

@@ -10,20 +10,6 @@
     bun.enable = true;
   };
 
-  services.postgres = {
-    enable = true;
-    package = pkgs.postgresql_17;
-    initialDatabases = [
-      { name = "portfolio"; }
-    ];
-    initialScript = ''
-      CREATE USER postgres WITH PASSWORD 'postgres';
-      GRANT ALL PRIVILEGES ON DATABASE portfolio TO postgres;
-    '';
-  };
-
-  env.DATABASE_URL = "postgresql://postgres:postgres@localhost:${toString config.services.postgres.port}/portfolio";
-
   processes = {
     dev.exec = "bun dev";
   };

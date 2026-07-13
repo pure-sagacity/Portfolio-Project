@@ -2,7 +2,9 @@ import { Outlet, Meta, Links, Scripts } from "react-router";
 import type { Route } from "./+types/root";
 import "./app.css";
 
-export const links: Route.LinksFunction = () => [];
+export const links: Route.LinksFunction = () => [
+  { rel: "icon", href: "/favicon.ico" },
+];
 
 export const meta: Route.MetaFunction = () => [
   { charset: "utf-8" },

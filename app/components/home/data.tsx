@@ -12,7 +12,9 @@ import {
   SiDocker,
   SiNixos,
   SiSqlite,
+  SiPodman,
 } from "@icons-pack/react-simple-icons";
+import type { JSX } from "react/jsx-runtime";
 
 export type ProjectCategory = "Systems" | "Tools" | "Research" | "Apps";
 
@@ -48,7 +50,7 @@ export interface SkillCategory {
 
 export interface SkillItem {
   name: string;
-  icon: JSX.Element;
+  icon: JSX1.Element;
   language: string;
   experience: string;
   focus: string;
@@ -57,28 +59,15 @@ export interface SkillItem {
 
 export const projects: Project[] = [
   {
-    title: "Onyx",
+    title: "Harbor",
     summary:
       "Local-first terminal platform for secure secrets, audit trails, and opinionated workflows.",
     category: "Tools",
     stack: ["Rust", "Bun", "TypeScript", "Axum"],
-    href: "https://github.com/pure-sagacity/Onyx",
-    gif: "https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif",
+    href: "https://gitea.maariz.org/pure_sagacity/harbor",
     status: "Active development",
-    year: "2025",
-    highlight: "Event-driven CLI engine",
-  },
-  {
-    title: "AetherGuard",
-    summary:
-      "Overlay network layer with declarative tunnel rules and policy-driven routing.",
-    category: "Systems",
-    stack: ["Rust", "WireGuard", "NixOS", "Tokio"],
-    href: "https://github.com/example/aetherguard",
-    gif: "https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif",
-    status: "Production stable",
-    year: "2024",
-    highlight: "WireGuard control plane",
+    year: "2026",
+    highlight: "Local-first secrets management",
   },
   {
     title: "Silicate",
@@ -86,46 +75,22 @@ export const projects: Project[] = [
       "Minimalist password manager with local encryption, zero cloud dependency.",
     category: "Tools",
     stack: ["Rust", "Argon2", "ChaCha20"],
-    href: "https://github.com/pure-sagacity/silicate",
+    href: "https://silicate.maariz.org",
     status: "Feature complete",
-    year: "2023",
+    year: "2026",
     highlight: "Native encryption primitives",
   },
-  {
-    title: "TS Interpreter",
-    summary:
-      "Interpreter project exploring parsing, scanning, and runtime execution models.",
-    category: "Research",
-    stack: ["TypeScript", "Rust", "AST"],
-    href: "https://github.com/example/interpreter",
-    gif: "https://media.giphy.com/media/3o6ZsX2F4b7dPSzEHu/giphy.gif",
-    status: "Research pipeline",
-    year: "2023",
-    highlight: "Parser and AST tooling",
-  },
-  {
-    title: "Nocturne Dashboard",
-    summary:
-      "Operator-facing dashboard for monitoring services, alerts, and telemetry.",
-    category: "Apps",
-    stack: ["React", "TypeScript", "PostgreSQL"],
-    href: "https://github.com/example/nocturne",
-    gif: "https://media.giphy.com/media/26u4nJPf0JtQPdStq/giphy.gif",
-    status: "Private build",
-    year: "2025",
-    highlight: "Realtime observability UI",
-  },
-  {
-    title: "Atlas Node",
-    summary:
-      "Distributed worker orchestration with queue routing and workload policies.",
-    category: "Systems",
-    stack: ["Go", "NATS", "Docker"],
-    href: "https://github.com/example/atlas-node",
-    status: "Prototype",
-    year: "2024",
-    highlight: "Workload scheduler",
-  },
+  // {
+  //   title: "Atlas Node",
+  //   summary:
+  //     "Distributed worker orchestration with queue routing and workload policies.",
+  //   category: "Systems",
+  //   stack: ["Go", "NATS", "Docker"],
+  //   href: "https://github.com/example/atlas-node",
+  //   status: "Prototype",
+  //   year: "2024",
+  //   highlight: "Workload scheduler",
+  // },
 ];
 
 export const techStacks: TechStack[] = [
@@ -270,8 +235,8 @@ export const skillsData: SkillCategory[] = [
         color: "bg-white/5",
       },
       {
-        name: "Docker",
-        icon: <SiDocker className="h-4 w-4 text-zinc-200" />,
+        name: "Podman",
+        icon: <SiPodman className="h-4 w-4 text-zinc-200" />,
         language: "Shell",
         experience: "3 years",
         focus: "Containers, local environments",
@@ -294,15 +259,15 @@ export const dotfilesData = [
     title: "NixOS Dotfiles",
     description:
       "Declarative system configuration for servers and workstations with reproducible builds.",
-    href: "https://github.com/example/nixos-dotfiles",
+    href: "https://gitea.maariz.org/Dotfiles/nixos-dotfiles",
     tags: ["Nix", "NixOS", "Home Manager"],
   },
   {
     title: "macOS Darwin Dotfiles",
     description:
       "Darwin-flake setup for macOS, bundling packages, shells, and dev tooling.",
-    href: "https://github.com/example/darwin-dotfiles",
-    tags: ["Nix", "Darwin", "zsh"],
+    href: "https://github.com/pure-sagacity/Dotfiles",
+    tags: ["Nix", "Darwin", "Fish"],
   },
 ];
 

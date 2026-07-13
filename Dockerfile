@@ -1,40 +1,24 @@
-FROM node:22 AS builder
-
+FROM oven/bun:1.1.34 AS development-dependencies-env
 WORKDIR /app
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
-ARG VITE_FIREBASE_API_KEY
-ARG VITE_FIREBASE_AUTH_DOMAIN
-ARG VITE_FIREBASE_PROJECT_ID
-ARG VITE_FIREBASE_STORAGE_BUCKET
-ARG VITE_FIREBASE_MESSAGING_SENDER_ID
-ARG VITE_FIREBASE_APP_ID
-ARG VITE_FIREBASE_MEASUREMENT_ID
+FROM oven/bun:1.1.34 AS production-dependencies-env
+WORKDIR /app
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --production
 
-# Copy package*.json
-COPY package*.json .
+FROM oven/bun:1.1.34 AS build-env
+WORKDIR /app
+COPY . ./
+COPY --from=development-dependencies-env /app/node_modules /app/node_modules
+RUN bun run build
 
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Build the application
-ENV VITE_FIREBASE_API_KEY=$VITE_FIREBASE_API_KEY \
-	VITE_FIREBASE_AUTH_DOMAIN=$VITE_FIREBASE_AUTH_DOMAIN \
-	VITE_FIREBASE_PROJECT_ID=$VITE_FIREBASE_PROJECT_ID \
-	VITE_FIREBASE_STORAGE_BUCKET=$VITE_FIREBASE_STORAGE_BUCKET \
-	VITE_FIREBASE_MESSAGING_SENDER_ID=$VITE_FIREBASE_MESSAGING_SENDER_ID \
-	VITE_FIREBASE_APP_ID=$VITE_FIREBASE_APP_ID \
-	VITE_FIREBASE_MEASUREMENT_ID=$VITE_FIREBASE_MEASUREMENT_ID
-RUN npm run build
-
-FROM nginx:alpine
-
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+FROM oven/bun:1.1.34
+WORKDIR /app
+ENV NODE_ENV=production
+COPY package.json bun.lock ./
+COPY --from=production-dependencies-env /app/node_modules /app/node_modules
+COPY --from=build-env /app/build /app/build
+EXPOSE 3000
+CMD ["bun", "run", "start"]

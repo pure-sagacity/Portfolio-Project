@@ -1,7 +1,4 @@
-node_modules/
-dist/
-.env
-.DS_Store
-npm-debug.log
-.vscode/
-.idea/
+.react-router
+build
+node_modules
+README.md

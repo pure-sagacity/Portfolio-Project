@@ -1,1 +1,0 @@
-export { app, db } from "./src/firebase.ts";

@@ -50,7 +50,7 @@ export interface SkillCategory {
 
 export interface SkillItem {
   name: string;
-  icon: JSX1.Element;
+  icon: JSX.Element;
   language: string;
   experience: string;
   focus: string;
@@ -63,8 +63,8 @@ export const projects: Project[] = [
     summary:
       "Local-first terminal platform for secure secrets, audit trails, and opinionated workflows.",
     category: "Tools",
-    stack: ["Rust", "Bun", "TypeScript", "Axum"],
-    href: "https://gitea.maariz.org/pure_sagacity/harbor",
+    stack: ["Rust", "Bun", "Axum"],
+    href: "https://harbor.maariz.org/",
     status: "Active development",
     year: "2026",
     highlight: "Local-first secrets management",

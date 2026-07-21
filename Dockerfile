@@ -1,24 +1,22 @@
-FROM oven/bun:1.3.13-debian AS base
-WORKDIR /app
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+FROM node:26-alpine3.23 AS base
 
 FROM base AS dependencies-env
 WORKDIR /app
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+COPY package.json ./
+RUN npm install
 
-FROM node:22-bullseye-slim AS build-env
+FROM base AS build-env
 WORKDIR /app
-COPY --from=dependencies-env /app/node_modules ./node_modules
-COPY . .
-RUN node node_modules/.bin/react-router build   # runs the CLI with Node
+COPY . ./
+COPY --from=dependencies-env /app/node_modules /app/node_modules
+RUN npm run build
 
-FROM base AS runtime
+FROM base
 WORKDIR /app
 ENV NODE_ENV=production
-COPY package.json bun.lock ./
-COPY --from=dependencies-env /app/node_modules ./node_modules
-COPY --from=build-env /app/build ./build
+COPY package.json ./
+COPY --from=dependencies-env /app/node_modules /app/node_modules
+RUN npm prune --omit=dev
+COPY --from=build-env /app/build /app/build
 EXPOSE 3000
-CMD ["bun", "run", "start"]
+CMD ["npm", "run", "start"]
